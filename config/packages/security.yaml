@@ -21,12 +21,20 @@ security:
                 check_path: /api/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+#            guard:
+#                authenticators:
+#                    - lexik_jwt_authentication.jwt_token_authenticator
+#            logout:
+#                path: /logout
+#                success_handler: lexik_jwt_authentication.handler.logout_success
 
         api:
             pattern: ^/api
             stateless: true
             jwt: ~
-
+#        main:
+#            custom_authenticators:
+#                - App\Security\ApiKeyAuthenticator
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
