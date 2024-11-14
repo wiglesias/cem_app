@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWSProvider\JWSProviderInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,20 +14,12 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ApiLoginController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
-    private UserPasswordHasherInterface $userPasswordHasher;
-    private JWSProviderInterface $jwtProvider;
-
     public function __construct(
-        JWSProviderInterface        $jwtProvider,
-        UserPasswordHasherInterface $userPasswordHasher,
-        EntityManagerInterface      $entityManager,
+        private readonly JWTTokenManagerInterface $jwtManager,
+        private readonly UserPasswordHasherInterface $userPasswordHasher,
+        private readonly EntityManagerInterface $entityManager,
     )
-    {
-        $this->entityManager = $entityManager;
-        $this->userPasswordHasher = $userPasswordHasher;
-        $this->jwtProvider = $jwtProvider;
-    }
+    {}
 
     #[Route('/api/login', name: 'api_auth_login', methods: ['POST'])]
     public function index(Request $request): JsonResponse
@@ -50,13 +42,7 @@ class ApiLoginController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
-//        $userData = [
-//            'id' => $user->getId(),
-//            'email' => $user->getEmail(),
-//        ];
-//
-//        $token = $this->jwtProvider->create($userData);
-        $token = $this->jwtProvider->create((array)$user);
+        $token = $this->jwtManager->create($user);
 
         return $this->json([
             'id' => $user->getUserIdentifier(),
