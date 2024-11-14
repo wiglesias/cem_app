@@ -17,10 +17,10 @@ Encore
     /*
      * ENTRY CONFIG
      *
-     * Each entry will result in one JavaScript file (e.g. app.jsx)
+     * Each entry will result in one JavaScript file (e.g. main.jsx)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('app', './assets/app.jsx')
+    .addEntry('main', './assets/main.jsx')
     .enableStimulusBridge('./assets/controllers.json')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
