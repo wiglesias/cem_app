@@ -8,11 +8,12 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
+import App from "./js/App";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <div>Hello world!</div>,
+        element: <App />,
     },
 ]);
 
